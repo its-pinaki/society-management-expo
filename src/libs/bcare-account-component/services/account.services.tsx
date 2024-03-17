@@ -1,9 +1,13 @@
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { rootEndPoint } from '../../../apps/constants';
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { rootEndPoint } from "../../../apps/constants";
+import { useAuthStore } from "../stores/account.stores";
 
 // Function to make sign up API call
-export const SignupService = async (userData:{phone_number:string}) => {
+export const SignupService = async (userData: {
+  phone_number: string;
+  user_type: string;
+}) => {
   try {
     const response = await axios.post(
       `${rootEndPoint}/api/account/register/`,
@@ -16,12 +20,21 @@ export const SignupService = async (userData:{phone_number:string}) => {
 };
 
 // Function to make sign up API call
-export const VerifyOtp = async (userData:{phone_number:string,otp_code:Number}) => {
+export const VerifyOtp = async (userData: {
+  phone_number: string;
+  otp_code: Number;
+  payload: any;
+}) => {
   try {
     const response = await axios.post(
       `${rootEndPoint}/api/account/verifyotp/`,
-      userData
+      {
+        phone_number:userData?.phone_number,
+        otp_code:userData?.otp_code,
+      }
     );
+    // After successful signup and verify otp , set tokens in the store
+    useAuthStore.getState().setTokens(payload?.token?.access, payload?.token?.refresh, payload?.details?.id);
     return response;
   } catch (error) {
     throw error;
@@ -29,7 +42,7 @@ export const VerifyOtp = async (userData:{phone_number:string,otp_code:Number}) 
 };
 
 // Function to make sign up API call
-export const RegenerateOtp = async (userData:{phone_number:string}) => {
+export const RegenerateOtp = async (userData: { phone_number: string }) => {
   try {
     const response = await axios.post(
       `${rootEndPoint}/api/account/regenerateotp/`,
@@ -42,10 +55,14 @@ export const RegenerateOtp = async (userData:{phone_number:string}) => {
 };
 
 // Function to make sign up API call
-export const LoginService = async (userData:{phone_number:string}) => {
+export const LoginService = async (userData: {
+  phone_number: string;
+  user_type: string;
+}) => {
+  console.log(userData);
   try {
     const response = await axios.post(
-      `${rootEndPoint}/api/account/regenerateotp/`,
+      `${rootEndPoint}/api/account/login-with-otp/`,
       userData
     );
     return response;

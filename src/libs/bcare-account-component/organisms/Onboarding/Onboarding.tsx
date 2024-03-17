@@ -54,7 +54,7 @@ const Onboarding: React.FC = () => {
 
   const renderDoneButton = () => {
     return (
-      <TouchableOpacity style={onboardingstyles.button} onPress={() => navigation.navigate('NextScreen')}>
+      <TouchableOpacity style={onboardingstyles.button} onPress={() => navigation.navigate('Login')}>
         <Text style={[onboardingstyles.buttonText, { color: "black" }]}>Done</Text>
       </TouchableOpacity>
     );
