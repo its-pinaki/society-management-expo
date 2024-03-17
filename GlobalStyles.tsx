@@ -109,7 +109,6 @@ export const Margin = {
   m_10xs: 3,
   m_2xs: 11,
   m_8xs: 5,
-  m_9xs: 4,
 };
 /* border radiuses */
 export const Border = {
